@@ -56,16 +56,16 @@ problematic.
 
 ```text
 
-# 1. Found your site-packages
+# 1. Find your site-packages
 python -m site
 
-# 2.Download the Dylib file
+# 2. Download the Dylib file
 wget https://github.com/sqreen/PyMiniRacer/files/7575004/libmini_racer.dylib.zip
 
-# 3.Unzip The Dylib file
+# 3. Unzip The Dylib file
 unzip libmini_racer.dylib.zip
 
-# 4. MV Dylib file to your site-packages
+# 4. Move Dylib file to your site-packages
 mv libmini_racer.dylib <site-packages-path/py_mini_racer/.>
 
 ```
