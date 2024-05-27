@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Evaluator</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div id="form-container">
+      <div class="form-block">
+        <textarea class="textarea"></textarea>
+        <button class="button" onclick="runScript(this)">Run</button>
+        <button class="button" onclick="removeBlock(this)">Remove</button>
+        <div class="output"></div>
+      </div>
+    </div>
+    <button class="button" onclick="addNewBlock()">Add new block</button>
+
+    <script src="{{ url_for('static', filename='runScript.js') }}"></script>
+    <script src="{{ url_for('static', filename='addBlock.js') }}"></script>
+    <script src="{{ url_for('static', filename='removeBlock.js') }}"></script>
+  </body>
+</html>

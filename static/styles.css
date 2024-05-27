@@ -1,0 +1,20 @@
+.form-block {
+    margin-bottom: 20px;
+}
+.textarea {
+    width: 70%;
+    height: 50px;
+}
+.button {
+    background-color: gray;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px; /* Ensure buttons are spaced out properly */
+}
+.output {
+    background-color: lightgray;
+    padding: 10px;
+    margin-top: 10px;
+}
