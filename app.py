@@ -1,9 +1,16 @@
-from typing import Any
+from typing import Any, Tuple
 
 import py_mini_racer
 from flask import Flask, Request, Response, jsonify, render_template, request
 
+from utils import get_arguments
+
 app = Flask(__name__)
+
+# Global variables to hold the configurable parameters.
+hard_memory_limit = 10000000
+soft_memory_limit = 10000000
+timeout_sec = 10
 
 
 def get_script_content(req: Request) -> str:
@@ -19,10 +26,18 @@ def evaluate_script(script_content: str) -> Any:
     Evaluate the provided JavaScript code.
     """
     ctx = py_mini_racer.MiniRacer()
-    # set evaluation memory limits ~ 10 mb
-    ctx.set_hard_memory_limit(10000000)
-    ctx.set_soft_memory_limit(10000000)
-    return ctx.eval(script_content, timeout_sec=10)
+    # Set evaluation memory limits
+    ctx.set_hard_memory_limit(hard_memory_limit)
+    ctx.set_soft_memory_limit(soft_memory_limit)
+    return ctx.eval(script_content, timeout_sec=timeout_sec)
+
+
+@app.route("/healthz", methods=["GET"])
+def health_check() -> Tuple[Response, int]:
+    """
+    Health check endpoint to verify that the application is running.
+    """
+    return jsonify({"status": "healthy"}), 200
 
 
 @app.route("/")
@@ -49,4 +64,11 @@ def run_script() -> Response:
 
 
 if __name__ == "__main__":
-    app.run()
+    args = get_arguments()
+
+    # Update global variables with parsed arguments
+    hard_memory_limit = args.hard_memory_limit
+    soft_memory_limit = args.soft_memory_limit
+    timeout_sec = args.timeout_sec
+
+    app.run(host=args.host, port=args.port, debug=args.debug)

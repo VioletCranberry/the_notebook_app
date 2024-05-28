@@ -31,7 +31,8 @@ ENV PYTHONUNBUFFERED=1
 COPY --from=builder /app .
 COPY templates templates/
 COPY static/ static/
+COPY utils.py .
 
 # Add the application script.
 COPY app.py .
-ENTRYPOINT ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT ["python3", "app.py"]
