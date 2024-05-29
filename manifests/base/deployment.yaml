@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: the-notebook-app
+  namespace: the-notebook-app
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: the-notebook-app
+          image: <OVERRIDE ME>
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: the-notebook-app-config
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"

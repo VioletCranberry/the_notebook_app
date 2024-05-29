@@ -1,0 +1,44 @@
+# For minikube local testing.
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: false
+    pairs:
+      variant: dev
+
+namespace: the-notebook-app
+
+resources:
+  - ../../base
+
+# Use local image.
+images:
+  - name: <OVERRIDE ME>
+    newName: docker.io/library/the_notebook_app
+    newTag: latest
+
+# Set the imagePullPolicy to Never, otherwise Kubernetes will try to download the image.
+patches:
+  - patch: |-
+      - op: replace
+        path: "/spec/template/spec/containers/0/imagePullPolicy"
+        value: Never
+    target:
+      kind: Deployment
+      name: the-notebook-app
+
+  # Patch deployment/svc ports if needed.
+  # - path: ./patches/patchDeploymentPorts.yaml
+  # - path: ./patches/patchServicePorts.yaml
+
+configMapGenerator:
+  - literals:
+      - HOST=0.0.0.0
+      - PORT=5000
+      - DEBUG=true
+      - JS_HARD_MEMORY_LIMIT=10000000
+      - JS_SOFT_MEMORY_LIMIT=10000000
+      - JS_EVAL_TIMEOUT_SEC=10
+    name: the-notebook-app-config
