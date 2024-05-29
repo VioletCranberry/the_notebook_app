@@ -69,3 +69,36 @@ unzip libmini_racer.dylib.zip
 mv libmini_racer.dylib <site-packages-path/py_mini_racer/.>
 
 ```
+
+### Docker testing
+
+```bash
+
+docker build -t the_notebook_app .
+docker run --env-file .env -p 5000:5000 the_notebook_app
+curl -X POST http://localhost:5000/run -H "Content-Type: application/json" -d \
+  '{"script": "function test() { return \"Hello, world!\"; } test();"}'
+
+{
+  "result": "Hello, world!"
+}
+
+```
+
+### Minikube testing
+
+```bash
+
+minikube start
+eval $(minikube docker-env)
+docker build -t the_notebook_app .
+kustomize build manifests/overlays/minikube | kubectl apply -f -
+kubectl port-forward --namespace the-notebook-app service/the-notebook-app 5000:5000
+curl -X POST http://localhost:5000/run -H "Content-Type: application/json" -d \
+  '{"script": "function test() { return \"Hello, world!\"; } test();"}'
+
+{
+  "result": "Hello, world!"
+}
+
+```
