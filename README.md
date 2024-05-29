@@ -19,8 +19,6 @@ Security Measures:
 - Default execution time limit set to 10 seconds
 - Default memory limit for code execution is 10Mb
 
-TODO: Enable configuration of the last two parameters upon application startup.
-
 ```
 
 ### Why not a simple `eval` in the Browser (client-side)?
