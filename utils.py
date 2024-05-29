@@ -38,14 +38,14 @@ def get_arguments() -> argparse.Namespace:
         "--host",
         type=str,
         required=False,
-        help="Bind socket to this host",
+        help="Bind socket to this host.",
         default=os.getenv("HOST", "0.0.0.0"),
     )
     parser.add_argument(
         "--port",
         type=int,
         required=False,
-        help="Bind socket to this port",
+        help="Bind socket to this port.",
         default=int(os.getenv("PORT", 5000)),
     )
     parser.add_argument(
@@ -54,6 +54,16 @@ def get_arguments() -> argparse.Namespace:
         required=False,
         help="Enable debug mode?",
         default=os.getenv("DEBUG", "false").lower() == "true",
+    )
+
+    parser.add_argument(
+        "--image",
+        type=str,
+        required=False,
+        help="Image to use for application instances.",
+        default=os.getenv(
+            "INSTANCE_IMAGE", "docker.io/library/the_notebook_app"
+        ),
     )
 
     return parser.parse_args()

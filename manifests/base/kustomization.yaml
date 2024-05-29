@@ -12,3 +12,6 @@ resources:
   - namespace.yaml
   - deployment.yaml
   - service.yaml
+  - ingress.yaml
+  - serviceAccount.yaml
+  - rbac.yaml

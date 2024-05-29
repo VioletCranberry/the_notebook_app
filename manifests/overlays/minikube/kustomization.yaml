@@ -29,10 +29,6 @@ patches:
       kind: Deployment
       name: the-notebook-app
 
-  # Patch deployment/svc ports if needed.
-  # - path: ./patches/patchDeploymentPorts.yaml
-  # - path: ./patches/patchServicePorts.yaml
-
 configMapGenerator:
   - literals:
       - HOST=0.0.0.0

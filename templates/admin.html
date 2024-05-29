@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notebook Control Plane</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div>
+      <h2>Notebook Control Plane</h2>
+      <button onclick="createInstance()">Create Instance</button>
+    </div>
+    <div id="instances">
+      {% for instance_id, instance in instances.items() %}
+      <div>
+        <span
+          >Notebook {{ instance_id }} | State: {{ instance['state'] }} | URL:
+          <a href="{{ instance['url'] }}" target="_blank"
+            >{{ instance['url'] }}</a
+          ></span
+        >
+        <button
+          onclick="controlInstance({{ instance_id }}, '{{ 'Stop' if instance['state'] == 'Running' else 'Start' }}')"
+        >
+          {{ 'Stop' if instance['state'] == 'Running' else 'Start' }}
+        </button>
+        <button onclick="controlInstance({{ instance_id }}, 'Delete')">
+          Delete
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <script>
+      function createInstance() {
+        fetch("/create_instance", { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => location.reload());
+      }
+
+      function controlInstance(instance_id, action) {
+        fetch(`/control_instance/${instance_id}/${action}`, { method: "POST" })
+          .then((response) => response.json())
+          .then((data) => location.reload());
+      }
+    </script>
+  </body>
+</html>

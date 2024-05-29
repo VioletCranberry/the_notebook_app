@@ -47,6 +47,26 @@ problematic.
 
 - Flask: [Flask Documentation](https://flask.palletsprojects.com/)
 - PyMiniRacer: [PyMiniRacer repository](https://github.com/bpcreech/PyMiniRacer)
+- Kubernetes Python Client: [Kubernetes Python Client](https://github.com/kubernetes-client/python)
+
+### Re. Multitenancy:
+
+Multitenancy in this application is managed within a Kubernetes environment. The /admin endpoint
+serves as a control plane, enabling the creation and management of multiple notebook application
+instances. Each instance corresponds to a separate Kubernetes deployment and service, all within the same namespace.
+
+The main application’s Ingress resource is dynamically updated to include new paths for each instance,
+ensuring seamless access. This architecture ensures isolation and scalability for each tenant,
+leveraging Kubernetes’ orchestration capabilities.
+
+Key Points:
+
+    •	Control Plane: Accessible via /admin, allowing easy management of notebook instances.
+    •	Isolation: Each instance runs as a separate deployment and service.
+    •	Dynamic Ingress: Automatically updated to route traffic to the appropriate instance.
+    •	Scalability: New instances can be created or removed as needed.
+
+TODO: make the `k8s_manager` code more maintainable.
 
 ### Troubleshooting:
 
@@ -87,7 +107,7 @@ curl -X POST http://localhost:5000/run -H "Content-Type: application/json" -d \
 
 ```bash
 
-minikube start
+minikube start && minikube addons enable ingress
 eval $(minikube docker-env)
 docker build -t the_notebook_app .
 kustomize build manifests/overlays/minikube | kubectl apply -f -

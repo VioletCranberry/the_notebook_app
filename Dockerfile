@@ -31,6 +31,7 @@ ENV PYTHONUNBUFFERED=1
 COPY --from=builder /app .
 COPY templates templates/
 COPY static/ static/
+COPY k8s_manager.py .
 COPY utils.py .
 
 # Add the application script.
